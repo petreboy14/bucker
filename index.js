@@ -30,6 +30,7 @@ var Bucker = function (opts, mod) {
     self.options = {};
     self.files = {};
     self.syslog = {};
+    self.loggly = {};
     self.logstash = {};
     self.splunk = {};
     self.udp = {};
