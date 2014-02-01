@@ -211,7 +211,7 @@ Bucker.prototype._findHandler = function (level, type) {
     return this.loggers[this.handlers[level][type]];
 };
 
-Bucker.prototype._runHandlers = function (level, data) {
+Bucker.prototype._runHandlers = function (level, data, raw) {
     var self = this;
     var handler;
     self._setLastLog(moment(), level, self.name, data, self._tags);
@@ -219,7 +219,7 @@ Bucker.prototype._runHandlers = function (level, data) {
     if (levels[level].num < self.level) return;
     types.forEach(function (type) {
         handler = self._findHandler(level, type);
-        if (handler) handler.log(moment(), level, self.name, data, self._tags);
+        if (handler) handler.log(moment(), level, self.name, data, self._tags, raw);
     });
 };
 
@@ -267,17 +267,17 @@ Bucker.prototype.debug = function () {
 };
 
 Bucker.prototype.log = Bucker.prototype.info = function () {
-    this._runHandlers('info', util.format.apply(this, arguments));
+    this._runHandlers('info', util.format.apply(this, arguments), arguments[0]);
     return this;
 };
 
 Bucker.prototype.warn = function () {
-    this._runHandlers('warn', util.format.apply(this, arguments));
+    this._runHandlers('warn', util.format.apply(this, arguments), arguments[0]);
     return this;
 };
 
 Bucker.prototype.warning = function () {
-    this._runHandlers('warn', util.format.apply(this, arguments));
+    this._runHandlers('warn', util.format.apply(this, arguments), arguments[0]);
     return this;
 };
 
